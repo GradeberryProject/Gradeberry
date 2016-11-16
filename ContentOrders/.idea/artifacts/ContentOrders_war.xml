@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ContentOrders:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ContentOrders-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ContentOrders:war exploded" />
+    </root>
+  </artifact>
+</component>

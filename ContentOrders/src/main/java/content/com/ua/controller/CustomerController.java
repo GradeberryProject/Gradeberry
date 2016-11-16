@@ -19,7 +19,7 @@ import java.io.*;
 import java.util.*;
 
 @RestController
-@SessionAttributes({"userOrder"})
+@SessionAttributes("userOrderId")
 public class CustomerController {
 
     @Autowired
@@ -51,8 +51,6 @@ public class CustomerController {
 
     @Autowired
     private FileService fileService;
-
-    private static Map<Long, UserOrder> ordersMap = new HashMap<>();
 
     @RequestMapping("/api/customer/getPaperTypes")
     public @ResponseBody List<PaperType> getPaperTypes() {
@@ -86,31 +84,28 @@ public class CustomerController {
 
     @RequestMapping(value = "/api/customer/add_order", method = RequestMethod.POST, consumes = {"application/json"})
     public
-    ResponseEntity<Void> createUserOrder(HttpSession session, @RequestBody UserOrder userOrder) {
+    Map<String, String> createUserOrder(HttpSession session, @RequestBody UserOrder userOrder) {
         User securityUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customer customer = customerService.findByUser(userService.findByLogin(securityUser.getUsername()));
-    //    Customer customer = customerService.findByUser(userService.get(2l));
         userOrder.setCustomer(customer);
         userOrder.setDate();
         userOrder.generateCustomerPrice(priceService.findCustomerPrice(userOrder));
         userOrder.generateWriterPrice(priceService.findWriterPrice(userOrder));
         userOrder.setUserOrderId(userOrderService.generateUserOrderId());
-        session.setAttribute("userOrderId", userOrder.getUserOrderId());
         userOrder.setStatus(Status.NEW);
         userOrderService.add(userOrder);
-        System.out.println(userOrder.getId());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("userOrderId", userOrder.getUserOrderId());
+        return response;
     }
 
 
-    @RequestMapping(value = "/api/customer/uploadFile", method = RequestMethod.POST)
-    public ResponseEntity<Void> uploadFile(HttpSession session, MultipartHttpServletRequest request)
+    @RequestMapping(value = "/api/customer/uploadFile/{userOrderId}", method = RequestMethod.POST)
+    public ResponseEntity<Void> uploadFile(MultipartHttpServletRequest request, @PathVariable("userOrderId") String userOrderId)
             throws ServletException, IOException {
-        //TODO: USER ORDER ID
-        String userOrderId = session.getAttribute("userOrderId").toString();
         User securityUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customer customer = customerService.findByUser(userService.findByLogin(securityUser.getUsername()));
-        String path = "user" + customer.getId() + "/" + userOrderId+"/";
+        String path = "user-" + customer.getId() + "/" + userOrderId+"/";
         fileService.uploadFileToAmazon(request.getFile(request.getFileNames().next()), path, userOrderId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

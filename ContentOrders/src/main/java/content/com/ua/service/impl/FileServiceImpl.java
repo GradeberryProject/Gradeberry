@@ -44,9 +44,7 @@ public class FileServiceImpl extends AbstractServiceImpl<FileDB> implements File
             upload.waitForCompletion();
             this.add(new FileDB(mpf.getOriginalFilename(), userOrderRepository.findByUserOrderId(userOrderId),
                     path+mpf.getOriginalFilename()));
-            System.out.println("Upload complete " + mpf.getOriginalFilename());
         } catch (AmazonClientException amazonClientException) {
-            System.out.println("Unable to upload file, upload was aborted.");
             amazonClientException.printStackTrace();
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
