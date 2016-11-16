@@ -18,6 +18,8 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private JavaMailSender mailSender;
+     public String str="";
+    //jfdhkj
 //gjhghjgkj
     public void sendMail(final DBUser user, final String pass){
       //  JavaMailSender mailSender = new JavaMailSenderImpl();
