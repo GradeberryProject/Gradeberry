@@ -18,7 +18,7 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private JavaMailSender mailSender;
-//gjhghjgkj
+//gjh
     public void sendMail(final DBUser user, final String pass){
       //  JavaMailSender mailSender = new JavaMailSenderImpl();
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
