@@ -84,7 +84,7 @@ public class LoginController {
 
 
     @RequestMapping(value="/api/customer/forgotPassword",method = RequestMethod.POST)
-    public @ResponseBody Map<String, String> fordotPassword(@RequestBody String email) {
+    public @ResponseBody Map<String, String> forgotPassword(@RequestBody String email) {
         DBUser dbUser = dbUserService.findByLogin(email);
         Map<String, String> response= new HashMap();
         if (dbUser != null) {

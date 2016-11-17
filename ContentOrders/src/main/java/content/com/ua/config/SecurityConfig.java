@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/customer/getWriterLevels").permitAll()//.hasRole("CUSTOMER")
                 .antMatchers("/api/customer/getServiceTypes").permitAll()//.hasRole("CUSTOMER")
                 .antMatchers("/api/customer/add_order").hasRole("CUSTOMER")
-                .antMatchers("/api/customer/uploadFile").permitAll()//.hasRole("CUSTOMER")
+                .antMatchers("/api/customer/uploadFile").hasRole("CUSTOMER")
                 .antMatchers("/api/customer/forgotPassword").permitAll()//.hasRole("CUSTOMER")
 
                 .and()

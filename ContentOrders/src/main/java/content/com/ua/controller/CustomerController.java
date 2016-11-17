@@ -19,7 +19,6 @@ import java.io.*;
 import java.util.*;
 
 @RestController
-@SessionAttributes("userOrderId")
 public class CustomerController {
 
     @Autowired
@@ -52,12 +51,15 @@ public class CustomerController {
     @Autowired
     private FileService fileService;
 
+
+    //TESTED
     @RequestMapping("/api/customer/getPaperTypes")
     public @ResponseBody List<PaperType> getPaperTypes() {
         List<PaperType> paperList = paperTypeService.getAll();
         return paperList;
     }
 
+    //TESTED
     @RequestMapping("/api/customer/getFormats")
     public @ResponseBody List<Format> getFormats() {
         List<Format> formatList = formatService.getAll();
@@ -84,7 +86,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/api/customer/add_order", method = RequestMethod.POST, consumes = {"application/json"})
     public
-    Map<String, String> createUserOrder(HttpSession session, @RequestBody UserOrder userOrder) {
+    Map<String, String> createUserOrder(@RequestBody UserOrder userOrder) {
         User securityUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customer customer = customerService.findByUser(userService.findByLogin(securityUser.getUsername()));
         userOrder.setCustomer(customer);
